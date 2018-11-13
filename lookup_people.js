@@ -1,5 +1,4 @@
 const argv = process.argv.slice(2);
-console.log(argv);
 
 const pg = require("pg");
 const settings = require("./settings"); // settings.json
@@ -14,10 +13,10 @@ const client = new pg.Client({
 });
 const displayResult = (data) => {
   console.log('Searching...');
+  console.log(`Found ${data.length} person(s) by the name '${argv[0]}' :`)
   data.forEach((element, index) => {
     console.log(`${index + 1} : ${element['first_name']} ${element['last_name']}, born ${element['birthday']}`)
   });
-  console.log('')
 }
 
 client.connect((err) => {
@@ -28,7 +27,7 @@ client.connect((err) => {
     if (err) {
       return console.error("error running query", err);
     }
-    console.log(displayResult(result.rows)); //output: 1
+    displayResult(result.rows);
     client.end();
   });
 });
